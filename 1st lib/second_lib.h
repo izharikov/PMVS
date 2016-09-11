@@ -1,1 +1,3 @@
-const char goodbye[] = "Goodbye, World";
+#include "string.h"
+
+void getGoodbyeMessage(char *c);

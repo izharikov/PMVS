@@ -1,1 +1,3 @@
-const char hello[] = "Hello, World";
+#include "string.h"
+
+void getHelloMessage(char *c);
