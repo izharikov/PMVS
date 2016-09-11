@@ -6,24 +6,30 @@ SRC1 = first_lib.c
 SRC2 = second_lib.c
 OBJ1 = $(SRC1:.c=.o)
 OBJ2 = $(SRC2:.c=.o)
-TARGET_LIB1 = libtarget1.so # target lib
-TARGET_LIB2 = libtarget2.so # target lib
+TARGET_LIB1 = target1 # target lib
+TARGET_LIB2 = target2 # target lib
 
 MAIN_FILE = main.c
 MAIN_OUT = out
-MAIN_FLAGS = -L"${CURDIR}" -Wall -o
+MAIN_FLAGS = -o $(MAIN_OUT) $(MAIN_FILE:.c=.o) -L. -Wl,-rpath=. -l$(TARGET_LIB1) -l$(TARGET_LIB2)
 
-all: first second target1 target2 make_main
+LIB1=$(addsuffix .so, lib$(TARGET_LIB1))
+LIB2=$(addsuffix .so, lib$(TARGET_LIB2))
+
+# -L. -Wall -o -ltarget1
+all: first second target1 target2 main make_main
 first:
 	$(CC) ${CFLAGS} ${SRC1}
 second:
 	$(CC) ${CFLAGS} ${SRC2}
 target1:
-	$(CC) $(LDFLAGS) $(TARGET_LIB1) $(OBJ1)
+	$(CC) $(LDFLAGS) $(LIB1) $(OBJ1)
 target2:
-	$(CC) $(LDFLAGS) $(TARGET_LIB2) $(OBJ2)
+	$(CC) $(LDFLAGS) $(LIB2) $(OBJ2)
 make_main:
-	$(CC) $(MAIN_FLAGS) $(MAIN_OUT) $(MAIN_FILE)
+	$(CC) $(MAIN_FLAGS)
+main:
+	$(CC) -c $(MAIN_FILE)
 clean:
-	$(RM) $(OBJ1) $(OBJ2) $(TARGET_LIB1) $(TARGET_LIB2) $(MAIN_OUT)
+	$(RM) $(OBJ1) $(OBJ2) $(LIB1) $(LIB2) $(MAIN_OUT) $(MAIN_FILE:.c=.o)
 
