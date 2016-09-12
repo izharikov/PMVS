@@ -1,0 +1,9 @@
+#!/bin/sh 
+weather_url=$(awk -F "=" '/weather_url/ {print $2}' weather.ini)
+timeout=$(awk -F "=" '/timeout/ {print $2}s' weather.ini)
+while true;
+do
+	content=$(wget $weather_url -q -O -)
+	echo $content
+	sleep $timeout
+done

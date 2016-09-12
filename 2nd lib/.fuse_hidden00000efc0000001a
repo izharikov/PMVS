@@ -1,0 +1,13 @@
+#!/bin/sh 
+weather_url=$(awk -F "=" '/weather_url/ {print $2}' weather.ini)
+timeout=$(awk -F "=" '/timeout/ {print $2}s' weather.ini)
+while true;
+do
+	content='<code>123</code>  <code>234</code>'
+	#$(wget $weather_url -q -O -)
+	#echo $content
+	#echo "<div>(.*?)</div>"
+	#$content | sed '#<code>(.*?)</code>#'
+	echo $content | grep '#<code>(.*?)</code>#'
+	sleep $timeout
+done
